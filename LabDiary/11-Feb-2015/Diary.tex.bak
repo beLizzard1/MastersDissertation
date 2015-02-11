@@ -1,0 +1,106 @@
+\documentclass[12pt,a4paper,notitlepage,twoside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\author{Robert James}
+\begin{document}
+\begin{Large}
+\begin{center}
+$02/02/15$ - $11/02/15$
+\end{center}
+\end{Large}
+
+\section{Dissertation}
+
+Started filling out the skeleton of my dissertation. $Wednesday 11th Feburary$ 
+
+\begin{lstlisting}[breaklines]
+4c37025... 2015-02-11 (10 minutes ago)
+Removed the structure of the project from the main .tex file into the readme for clarity.
+
+M       Dissertation.tex
+
+
+7279140... 2015-02-11 (17 minutes ago)
+Started the initial preparation for the write up of my dissertation. Using the guidelines provided by the department. Going to start writing the Introduction to the project and possibly the theory involved.
+
+A       1-Introduction/Introduction.tex
+A       2-Theory/Theory.tex
+A       3-Code/Code.tex
+A       4-Results/Results.tex
+A       5-DiscussionofResults/DiscussionofResults.tex
+A       6-Conclusions/Conclusions.tex
+A       7-Appendices/Appendices.tex
+A       8-References/References.tex
+A       9-Acknowledgements/Acknowledgements.tex
+A       Dissertation.pdf
+A       Dissertation.tex
+M       README.md
+
+
+1e0ccd7... 2015-02-11 (55 minutes ago)
+Initial commit
+
+A       .gitignore
+A       README.md
+
+\end{lstlisting}
+
+
+\section{Code}
+
+\begin{lstlisting}[breaklines]
+4c43c7f... 2015-02-10 (19 hours ago)
+Today has been a day of wrangling code to get it to do what I want. Meeting with supervisor at 6pm, any new steps that are required that arise after the meeting will be the target of the next few days work. I can output a text representation of the lattice once it has been driven to the target energy. Added *.lat to the .gitignore so that the text lattice file isn't version controlled.
+
+M       .gitignore
+M       Makefile
+M       main.cpp
+M       param.cfg
+M       potts.cpp
+
+
+2e3b5e6... 2015-02-10 (24 hours ago)
+Trying to improve the speed in which the energy is driven to the target, instead of randomly picking points, I now go through the lattice one point at a time trying to push the energy towards the target.
+
+M       .gitignore
+M       Makefile
+M       main.cpp
+D       output.dat
+M       param.cfg
+M       potts.cpp
+M       potts.h
+
+
+c7acffe... 2015-02-09 (2 days ago)
+Trying to add live qt window to render the lattice state in near real time. When that is done I can start improving the method I am using to go towards the energy band
+
+M       Makefile
+M       main.cpp
+M       param.cfg
+M       potts.cpp
+M       potts.h
+
+
+a9f0eed... 2015-02-09 (2 days ago)
+Added a .gitignore to ensure that compiled objects don't get put into the repository.
+
+A       .gitignore
+
+
+3002b58... 2015-02-09 (2 days ago)
+Initial commit Work done thus far: Initialisation of the Lattice either randomly or aligned to random q state. Enforced Periodic Boundary Conditions using the % operator rather than a function. Energy Calculation can now be done with relative ease (might need to check that for errors) Partially written a function that when given a specific lattice point drives the energy towards the target (very inefficent atm because it is given random coordinates) Going to start writing a function that identifies regions and the lattice points on the boundary and pass those to the driving algorithm
+
+A       Makefile
+A       README.md
+A       main.cpp
+A       output.dat
+A       param.cfg
+A       potts.cpp
+A       potts.h
+A       utilityfunctions.cpp
+A       utilityfunctions.h
+
+\end{lstlisting}
+
+\end{document}
