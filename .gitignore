@@ -107,3 +107,6 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+# JabRef .bak file
+*.bib.bak
