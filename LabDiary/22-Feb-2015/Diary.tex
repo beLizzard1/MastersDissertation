@@ -1,0 +1,85 @@
+\documentclass[12pt,a4paper,notitlepage,twoside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\author{Robert James}
+\begin{document}
+\begin{Large}
+\begin{center}
+$02/02/15$ - $11/02/15$
+\end{center}
+\end{Large}
+
+\section{Dissertation}
+
+\begin{lstlisting}[breaklines]
+commit f8acf0a268869ab4e22c654817399d80e744f76a
+Author: Robert James <rjames93@sucs.org>
+Date:   Sun Feb 22 17:57:12 2015 +0000
+
+    Simple title page added for my Dissertation.
+    
+     Changes to be committed:
+    	modified:   1-Introduction/Introduction.tex
+    	modified:   2-Theory/Theory.tex
+    	modified:   Dissertation.pdf
+    	modified:   Dissertation.tex
+    	new file:   SwanseaLogo.png
+    	new file:   title.tex
+
+commit e947e7abc3ad264bed38a52efeb5ea9368ec0e76
+Merge: d5a1632 db77ca6
+Author: Robert James <rjames93@sucs.org>
+Date:   Fri Feb 20 10:01:26 2015 +0000
+
+    Merge branch 'master' of https://github.com/rjames93/MastersDissertation
+
+commit d5a1632a174f9dc33f065d76fb8668c4fc122ae2
+Author: Robert James <rjames93@sucs.org>
+Date:   Fri Feb 20 10:00:54 2015 +0000
+
+    Cleaning up the LabDiary folder
+    
+     Changes to be committed:
+    	modified:   Diary.pdf
+    	deleted:    Diary.tex.bak
+
+\end{lstlisting}
+
+
+\section{Code}
+
+\begin{lstlisting}[breaklines]
+commit 4a8bfaa7654524c4cb8bfd9a9e64f85dfc530539
+Author: Robert James <rjames93@sucs.org>
+Date:   Sun Feb 22 18:02:15 2015 +0000
+
+     Changes to be committed:
+    	modified:   .gitignore
+    	modified:   main.cpp
+    	modified:   param.cfg
+    	modified:   potts.cpp
+    	modified:   potts.h
+    	new file:   template.cfg
+    
+    Ignoring folders with some results in them. Finished simple
+    implementation of the metropolis algorithm. Simple algorithm
+
+commit 32d637df5a09746badca898853ff2e64810e3017
+Author: Robert James <rjames93@sucs.org>
+Date:   Fri Feb 20 11:36:02 2015 +0000
+
+     On branch master
+     Changes to be committed:
+    	modified:   main.cpp
+    	modified:   param.cfg
+    	modified:   potts.cpp
+    	modified:   potts.h
+    	modified:   utilityfunctions.cpp
+    	modified:   utilityfunctions.h
+    
+    Added empty DO_UPDATE algorithm going to make it take a enum type which determines the UPDATE method it uses. Going to write the simple metropolis update algorithm next. Added arrays for the magnetistaion and energy measurements which are stored as public variables in the class for later access.
+
+\end{lstlisting}
+
+\end{document}
