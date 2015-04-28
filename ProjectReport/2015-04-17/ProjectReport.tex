@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{float}
+\restylefloat{table}
 \begin{document}
 \input{title.tex}
 
@@ -73,7 +74,7 @@ Taking those averages and plotting against the inverse volume would lead to a st
 
 A summarized table of results for $Q=2$ is below, the other results can be found at the end of the report.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{adjustbox}{width=1\textwidth}
 \begin{tabular}{ccccccccc}
@@ -109,7 +110,7 @@ b = 0.865616 \pm 0.03173     \textrm{ (3.666\%)}
 As you can see in the section above, the fitted y intercept was $0.865616 \pm 0.03173$ the theoretical result was $0.881373587$ meaning the returned result was correct within error.
 Below are the graphs and the final fitted values with errors.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{q3variousgrid.png}
@@ -140,7 +141,7 @@ The density of states can be expanded using a Taylor Series expansion when the e
 
 The next step is to generate $a_n$ for various energies to allow us to calculate the local linear approximation of the density of states.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{variousq16x16-full.png}
   \caption{Plot of $a_n$ vs Target Energy for Various Q on a 16x16 lattice}
@@ -163,7 +164,7 @@ The type of phase transition changes when $q>4$.
 Looking at the graph below there is a clear change in the behaviour for $q>4$.
 For $q>4$ you can see regions of stability around the point of transition.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{variousq16x16.png}
     \caption{Restricted Plot of $a_n$ vs Target Energy for Various Q on a 16x16 lattice}
@@ -171,7 +172,7 @@ For $q>4$ you can see regions of stability around the point of transition.
 
 Focusing on $q=10$ now, you can see behaviour very similar to that in the Guagnelli paper which suggests that the behaviour is correct.
 Below is a plot that looks at the $a_n$ around the critical point of $q=10$ $\beta_c = 1.426062439$.
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{q1016x16.png}
     \caption{$q=10$ for comparison against Guagnelli}
@@ -183,15 +184,24 @@ In Mathematica I imported the data to a workbook and calculated the linear compo
 \text{Con}(\text{n$\_$})\text{:=}\text{delta} \left(2 \sum _{i=1}^n \text{Q2data}[[i]]+\text{Q2data}[[n]]+\text{Q2data}[[1]]\right)+\text{C0}
 \end{equation}
 The above equation allows you to calculate each of the constants from the $a_n$ data at the midpoints.
-For a Grid Size of 8 the parameters for Q2,Q3,Q4,Q8 and Q10 are given below.
-\begin{table}[h]
-\begin{tabular}{|c|c|c|c|c|c|}
+For a Grid Size of 8 the parameters for Q2 are given below over the next few days I will calculate the remaining values for different grid sizes.
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
 \hline
-Q & 2 & 3 & 4 & 8 & 10 \\ \hline
-Constants & $2.07489+C_0$ & $2.80549+C_0$ & $3.38889+C_0$ & $4.77754+C_0$ & $5.2132+C_0$ \\ \hline
+Constant Number & 2 \\ \hline
+C0 & - \\ \hline
+C1 & 0.520886 + C0 \\ \hline
+C2 & 0.5280140999999999 + C0 \\ \hline
+C3 & 0.60681355 + C0 \\ \hline
+C4 & 0.6869051 + C0 \\ \hline
+C5 & 0.7531942 + C0 \\ \hline
+C6 & 0.8015167999999999 + C0 \\ \hline
+C7 & 0.8285705000000001 + C0 \\ \hline
+C8 & 0.8299576500000001 + C0 \\ \hline
 \end{tabular}
 \end{table}
-
+\newpage
 \section{Future}
 Next thing to do is calculate $C_0$ this require numerically calculating the below integral.
 \begin{equation}

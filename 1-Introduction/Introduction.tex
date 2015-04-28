@@ -1,16 +1,11 @@
 \chapter{Introduction}
 %Give basic idea of the project and its content. Describe (and give references to) other relevant work in the literature.
-In the field of Computational Physics, there is a large interest in lattice simulation.
-One of the most simple models that still exhibits non trivial behaviour is the q-state Potts Model.
-By Restricting the Potts model to 2 or 1 dimension(s) and the constraining the number of independent states,$q = 2$ you can determine the behaviour at high,low and critical temperatures analytically\cite{Montroll1963} this is known as the Ising Model.
+This project looks at the Order-Order interfaces in the Potts Model.
+To do this, I needed to develop a computer model of the system.
+The model was designed to do all of the tests required with a single executable paired with a parameters file.
+The program can be initialized and run with various bash script files in series and to improve total run time can be run with a SPMD (Single Process Multiple Data) tool GNU Parallel\cite{Tange2011a} which allows me to run the same process with different parameters simultaneously.
 
-This dissertation will be looking at directly determining the interface free energy as a ratio of the partition functions.
-\begin{equation}
-F_{I}(L) = -\log \frac{\tilde{Z}(L)}{Z(L)} + \log(L)
-\end{equation}
-From the interface free energy above we can calculate the interface tension $\sigma$.
-\begin{equation}
-\sigma = \lim_{L\to \infty} \frac{F_{I}(L)}{L^{D-1}}
-\end{equation}
-
-To reach the final goal of studying the interface tensions in the q-state Potts Model, there w
+\section{Computational Physics}
+Computational physics is a branch of physics that models complex physical systems.
+A field of research in this branch of physics is Lattice simulations.
+Lattices are highly suited to computer simulation due to their discrete nature.
