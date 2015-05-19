@@ -1,7 +1,16 @@
-\documentclass[12pt,a4paper,twoside]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{subcaption}
+\usepackage{pdfpages}
+
+\usepackage[a4paper]{geometry}
 \usepackage{float}
 
 \begin{document}
@@ -30,24 +39,20 @@
 \input{4-Results/Results.tex}
 % end Results
 
-% begin DiscussionofResults
-\input{5-DiscussionofResults/DiscussionofResults.tex}
-% end DiscussionofResults
-
 % begin Conclusions
-\input{6-Conclusions/Conclusions.tex}
+\input{5-Conclusions/Conclusions.tex}
 % end Conclusions
+
+% begin References
+\input{6-References/References.tex}
+% end References
 
 % begin Appendices
 \input{7-Appendices/Appendices.tex}
 % end Appendices
 
-% begin References
-\input{8-References/References.tex}
-% end Referecnes
-
 % begin Acknowledgments
-\input{9-Acknowledgements/Acknowledgements.tex}
+\input{8-Acknowledgements/Acknowledgements.tex}
 % end Acknowledgements
 
 \end{document}

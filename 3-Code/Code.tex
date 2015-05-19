@@ -1,3 +1,202 @@
 \chapter{Code}
-This chapter focuses on the implementation and design choices that I made during the development of the code for this project.
-At the beginning of the project, I decided to implement the code using C++
+
+\section{Design Choices}
+In this project, I started designing the code such that it would compile into a single executable.
+To ensure that I didn't need to recompile this code every time I needed to change parameters, I opted for a simple configuration file that would determine the functions and the flow of operations.
+To this end, I ended up using the C++11 standard\cite{2011-C++} and a library designed to parse configuration files libconfig \cite{Lindner2012}.
+
+libconfig has two different interfaces, a C API (Application Programming Interface) and a C++ API. I picked the API written in C++ because it matched the rest of the project.
+An example configuration file is given below.
+\begin{verbatim}
+#Program Mode
+wanglandau = true;
+coldstart = true;
+dim_grid = 16;
+dim_q = 2;
+interface = true;
+#Metropolis Algorithm Parameters
+beta = 1.00;
+randomspin = false;
+n_samples = 1000;
+#Wang Landau Algorithm Parameters
+target_e = -2.00;
+target_width = 16.0;
+n_entropic_samples = 1000;
+n_asamples = 100;
+a0 = 2.0;
+\end{verbatim}
+
+In the above configuration file you can see $5$ configuration options that determine the type of simulation that is going to be performed and $3/5$ other options that are for these specific operations.
+
+The first parameter, wanglandau, determines the type of simulation that is going to be run. If this value is false, the program runs a typical Metropolis Algorithm and reads the beta, randomspin and n\_samples parameters further down the file. If the parameter is true, it runs the Wang Landau algorithm. This algorithm requires a few more parameters, like the target energy (target\_e), the target width, the number of $a_n$ samples and a starting value for the iterative calculation of $a_n$.
+
+The other parameters are required by both of the algorithms, these determine the size of the lattice (dim\_grid) and the number of q states (n\_q). The parameter, coldstart, determines the initial state of the system be it ordered or disordered.
+
+\section{Code Operation}
+In this section, I will describe the operation of the program. As described above, there are two different modes in this project so I will explain each type separately.
+However in both modes, the first stage is the same.
+We read the file name of the configuration file from the input arguments and parse it into the variables.
+Then to calculate the angles for each different q state because they only need to be calculated once at the beginning.
+Now that all the variables are loaded in from the configuration file, it is closed and the lattice/grid variable is constructed as a 2D array of heap memory.
+The decision to allocate the memory as a 2D array was to improve the readability of the code.
+In most applications, it is preferable to construct a 1D array and access elements using Row-Major order to improve the access speed of the elements.
+In this case, the 2D array was preferable as it significantly improved the overall readability and intuitive understanding of the code.
+By default the C++ memory allocation operator, new[], doesn't assign any value to the assigned memory which means to initialise the system the program needs to run through every lattice point and assign it a value.
+In the case of a cold start, the program simply generates a random integer between 1 and q and assigned each lattice point to that value.
+In the case of a hot start, a new random number is generated for each point.
+From this point on ward the two operating modes diverge in their assigned functions so I will move on to the Metropolis algorithm
+
+\subsection{Metropolis}
+A description of the Metropolis algorithm is now required to ensure that the next stages of the program are understood.
+A Metropolis-Hastings algorithm is a Markov Chain Monte Carlo method to obtain random samples from a probability distribution.
+In general this technique is usually used to solve more complex multidimensional problems despite this it is highly adaptable and suitable for the problem at hand.
+The Metropolis-Hastings approach to solving this problem involves modification of a single lattice point at each step.
+There are two methods for determining which lattice point to use.
+The first method is the simplest, using a PRNG (Pseudo Random Number Generator) generate the coordinates of the lattice site which is to be modified.
+The second method involves progressing through each point in the lattice in order.
+In this project, I elected to use the second method because at the time it seemed to require less computation and as such be faster.
+However due to the nature of the 2D array used as the lattice it requires the use of two nested for loops which could slow down the process.
+Once the lattice site has been chosen from whatever method chosen, the program makes a random change to the state of that point and calls it a \textit{Proposal State}.
+The energy change between the original state and the proposed state is calculated.
+Again there are two methods to do this, one a complete sweep across the lattice applying the Hamiltonian and using the sum and the other which looks only at the \textit{links} between lattice points that have changed because everything else will cancel out.
+Again both methods have a function in the final source code but the second method is used as this reduces the total number of operations required.
+The energy difference, delta, between the two states is then put through a simple algorithm, shown below, to determine if the change is accepted or not.
+
+\begin{algorithm}
+\caption{Accepting or Rejecting a Proposed Change for the Metropolis Algorithm}
+\begin{algorithmic}
+\IF{$delta < 0.0$}
+\STATE ACCEPT
+\ELSE
+\STATE $0 <= random() < 1$
+\IF{$e^{-\beta\textrm{ delta}} > rand$}
+	\STATE ACCEPT
+\ELSE
+	\STATE REJECT
+\ENDIF
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+$\beta$ is a variable that is provided in the configuration file.
+Now that the Metropolis-Hastings method has been explained in the context of this particular problem the remaining behaviour of the Metropolis portion of the code can be explained.
+Before any measurements can be taken from this system, it needs to be thermalised so that it reaches equilibrium.
+The average time taken for the system to reach thermal equilibrium is known as the thermalisation time $\tau_eq$ and it varies upon lattice size.
+After the system thermalises, the program progresses onto the measurement component of the program.
+In this mode of operation, there are 3 measured quantities, the Acceptance, the Magnetisation and the Energy.
+The acceptance is the ratio of accepted changes against the total number of proposed states, the Magnetisation and Energy as described earlier in the report are shown below.
+\begin{equation}
+\begin{split}
+\mathcal{M}=\sum_{i}^{V}\sigma_i\\
+E =\sum_{\{i,j\}}\delta_{Kr}(\sigma_{i,j})
+\end{split}
+\end{equation}
+Now using the n\_samples parameter the program starts a FOR loop which performs an update and a measurement algorithm at each loop.
+By storing the recorded measurement at each step the program stores a 1D array of measurement values as it goes through the loop.
+When the loop is finished the program has finished the measurement stage and now starts to perform analysis on the measurements.
+The next stage will be described in a subsequent section.
+
+\subsection{Wang Landau}
+This mode of operation is significantly different to the Metropolis algorithm.
+After all of the parameters have been loaded and the lattice states set either randomly (hotstart) or all aligned (coldstart) the program needs to drive the system state into the desired energy band.
+The parameters, target\_e and target\_width which define the lattice are provided in the configuration file.
+In general, the target width is taken to be equal to the grid size in an attempt to match the conditions in the Guagnelli paper studying this particular problem for Q=10\cite{1209.4443} but it can be set to smaller values to try and restrict the sampling region more.
+I found the simplest way to drive the system towards the target energy band was for each point on the lattice suggest a random state, if the difference in energy between this new state and the target is smaller than that of the original state accept it.
+The program does this repeatedly until it reaches it's target energy band this is one of the more time consuming parts of the code because it doesn't try to reduce the length of any interfaces, which would allow a significantly higher level of control and it can get stuck, especially in low $\beta$ conditions.
+By the time the loop stops, the program will have reached it's target energy band. It is unlikely but it remains possible that the energy of the system is exactly equal to the configuration file parameter due to the discrete nature of the energies that arises from the discrete number of possible states.
+The next stage of the program is to take the value $a_0$ provided by the configuration file and perform an update on the system.
+This time however the algorithm is slightly modified from the original.
+\begin{algorithm}
+\caption{Accepting or Rejecting a Proposed Change for the Wang Landau Algorithm}
+\begin{algorithmic}
+\IF{outsideenergyband()}
+	\STATE REJECT
+\ELSE
+	\STATE CONTINUE
+	\IF{$\delta < 0.0$}
+		\STATE ACCEPT
+	\ELSE
+		\STATE $0 <= random() <= 1$
+		\IF{$e^{-a_{n}\delta} > random()$}
+			\STATE ACCEPT
+		\ELSE
+			\STATE REJECT
+		\ENDIF
+	\ENDIF
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+After running this update algorithm across the lattice and taking a measurement of $E^\star$. $E^\star$ is the current energy less the target energy $E_0$.
+The program moves onto the iterative equation for $a_n$ which is given below for $Q = 2$.
+\begin{equation}
+a_{n+1} = a_n + \frac{12}{L^2}\langle E^\star \rangle
+\end{equation}
+For simulations that involve higher numbers of states taking the form for $a_n$ to be
+\begin{equation}
+a_{n+1} = a_n + \frac{12}{4L+L^2}\langle E^\star \rangle
+\end{equation}
+
+After updating the value for $a_n$ the program returns to the beginning of a FOR loop, that runs a configurable number of times dependent on the value of n\_asamples.
+The aforementioned FOR loop includes updating the lattice a number of times based upon the configuration parameter, n\_entropic\_samples taking measurements of the lattice and recalculating $E^{\star}$ to be used in the calculation of $a_n$ using the method described above.
+
+\subsection{Adding a Twist}
+Adding a twist to the lattice requires a slight modification to the update algorithm used in the Wang Landau method.
+In my code, I add a twist to the lattice close to the midpoint in the x direction. It is trivial to calculate what point it occurs using the floor function provided by the C++ math library.
+The modifications to the code that was used in the Wang Landau method are simple and are switched on and off using the interface boolean parameter in the configuration file.
+This ensures a twist exists in the lattice and allows us to calculate $Z^*$ that is required to study the interface tension.
+At the interface point, whose value is determined using $floor(L/2)$, the update algorithm is replaced by setting the value of the lattice on the other side of the interface plus a constant and then put the modulus function to ensure the new state wouldn't be a state that wasn't expected in the program.
+
+\section{Run}
+To get meaningful data from the code, it needs to be run multiple times with many different parameters.
+This means that my code is SPMD, Single Program Multiple Data which is a Subcategory of MIMD, Multiple Instruction Multiple Data.
+Despite design choices in my code causing it to run slower than expected, it was still sensible to explore a method of pregenerating the configurations and scheduling them to run as efficently as possible.
+To this end, as part of the process I wrote several shell scripts that were designed to improve this stage of the process.
+When writing these shell scripts I ran into a very useful utility GNU Parallel\cite{Tange2011a}.
+This utility allows a simple single threaded program to run with several different configurations on an arbitary number of cores.
+An example of one of these shell scripts is below.
+\begin{lstlisting}[breaklines]
+rm -R -- */
+rm output.dat
+rm Q*.dat
+filename='target.list'
+filelines=`cat $filename`
+gridsize=18
+interface=false
+sed -i '/interface\s=\s.*/c\interface = '$interface'' param.cfg
+sed -i '/dim_grid\s=\s.*/c\dim_grid = '$gridsize'' param.cfg
+sed -i '/target_width\s=\s.*/c\target_width = '$gridsize'.0' param.cfg
+
+for q in 2 3 4 8 10
+do
+rm -R -- */
+for i in $filelines
+do
+	mkdir energy$i
+    cd energy$i
+    cp ../param.cfg .
+    sed -i '/target_e\s=\s.*/c\target_e = '$i'' param.cfg
+    sed -i '/dim_q\s=\s.*/c\dim_q = '$q'' param.cfg
+    cd ..
+done
+
+parallel -j16 --eta "cd energy{}; ../potts.app param.cfg; cd ../" :::: target.list
+ 
+filelines=`cat $filename`
+for i in $filelines
+do
+	anaverage=`tail -n 30 energy$i/an.dat | awk '{ sum+=$1} END {print sum/30}'`
+    energy=$i
+    echo "$energy $anaverage" >> Q$q.dat
+done
+done
+\end{lstlisting}
+
+This script, takes a template configuration file and fills out all of the parameters and creates a directory for the code to run in, runs the code on the number of cores determined by the \-j parameter of the parallel exeuctable and then collects the results averages the $a_n$ and returns the results for each energy.
+
+\section{Output}
+The program was several modes of operation. In the Metropolis mode, the program creates several files that contain the results of the simulation for the measured parameters, Energy Per Unit Volume, Magnetisation Per Unit Volume, Specific Heat and the Magnetic Susceptibility.
+The output from a single file in this mode contains 3 columns. The value of $\beta$, the actual value of the measurement and the error in the measurement.
+For the Wang Landau mode, the code returns a file with all of n measurements of $a_n$.
+Because the programs themselves are run in parallel with others the single outputs are appended to one another at the end so that, in the Metropolis case you get a list of the results at each $\beta$ which is in an easily plottable format.
+In the case of the Wang Landau mode, the nature of the output is such that it isn't simply a case of appending each files contents together.
+As shown in the example above the final results of the output file are averaged and the averages are appended together to give a single output file.

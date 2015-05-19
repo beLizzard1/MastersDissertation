@@ -1,88 +1,72 @@
 \chapter{Theory}
 %Necessary theoretical background
 
-The Potts Model, a lattice simulation typically performed on a regular euclidean grid.
-In this model, the number of states per lattice site is given by $q$.
-In the code that was written for this project, each lattice point is assigned a value $q={1,q}$.
-The values that are assigned to the lattice can be visualised as an angle equally distributed in the space.
+\section{Thermodynamic Limit}
+In the thermodynamic limit,
 \begin{equation}
-\theta_{n} = \frac{2\pi n}{q}
+	N\rightarrow\infty, V\rightarrow\infty, \frac{N}{V} = const.
 \end{equation}
-Or to show it visually,
-\begin{figure}[H]
-\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{2-Theory/circleandlines2.png}	
-	\end{subfigure}
-	%
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{2-Theory/circleandlines3.png}
-	\end{subfigure}
-	%
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{2-Theory/circleandlines4.png}
-	\end{subfigure}
-\caption{Angle representation of $q$ states}
-\end{figure}
+
+As stated earlier in computer simulations the concept of $\infty$ is completely redundant.
+Computers retain a restricted amount of memory available to perform calculations.
+To this end, simulations in general study the behaviour of smaller systems.
+Depending on the complexity of the problems invovled and how co-related each site is, you often find a large range in sizes from $8x8$ up to several thousand.
+Assuming momentarilly you could perform computer simulations for an inifinite lattice, you would find results that after reasonable thermalisation and statistical analysis that are identical to a theoretical prediction.
+As stated earlier, the number of lattice sites you can reasonablly use for simulation purposes is restricted.
+This introduces boundary effects and noise that are not present on an inifite grid.
+To reduce this problem you turn to your lattice construction.
 
 \section{Lattice}
-Most lattice simulations try to measure thermodynamic quantities in the Thermodynamic limit.
-The Thermodynamic limit can be written as
+As stated earlier, it is impossible to perform computer simulations for inifite lattice sizes.
+By shrinking the lattices down to useable sizes you typically introduce boundary effects that can add a layer of noise to the data.
+To reduce the effects of boundary noise, you can enforce periodic boundary conditions on your lattice such that
 \begin{equation}
-N \to \infty, V \to \infty, \frac{N}{V} = const
+	\begin{split}
+		s_{i=L,j=0} = s_{i=0,j=0}  \\
+		s_{i=0,j=L} = s_{i=0,j=0}
+	\end{split}
 \end{equation}
-In this limit, macroscopic thermodynamics apply.
-
-For small lattice sizes which are reasonably easy to simulate, you will have to account for boundary effects.
-For small grids, boundary effects can start to dominate the behaviour of the system, because of this, periodic boundary conditions are often implemented to remove the issue.
-A 2D lattice with periodic boundary conditions can be visualised as a torus like in the diagram below.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{2-Theory/latticetotorus.png}
+In a physical sense taking a 2 dimensional lattice and enforcing such boundary conditions upon it leads to a torus as shown below.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.25\textwidth]{2-Theory/latticetotorus.png}
+	\caption{2 dimensional lattice transforming to torus under periodic boundary conditions}
 \end{figure}
 
+\section{Interfaces}
 
+\section{Observables}
+	\subsection{Magnetisation}
+	Materials are often classified by their responses to externally applied fields.
+	The types of response to the applied fields are diamagnetic, paramagnetic or ferromagnetic.
+	Diamagnetism is the weakest response and opposes the applied magnetic field.
+	Paramagnetism is stronger than diamagnetism and is proportional to the field strength and aligned to the direction.
+	Ferromagnetism, is the type of magnetism studied in this project, the effects of this type of response can occasionally be orders of magntitude larger than of the other types.
+	In this project, we have no externally applied field.
+	Diamagnetism and Paramagnetism in this case do not apply because they are in response to an externally applied field.
+	\begin{equation}
+		M=\sum_{i}^{V}\sigma_{i}
+	\end{equation}
 
-\section{Hamiltonian}
+	\subsection{Energy}
+	\begin{equation}
+		H=E=-\sum_{i,j}\delta (\sigma_i,\sigma_j)
+	\end{equation}
 
-\begin{equation}
-\mathcal{H} = J_{c} \sum\limits_{<i,j>} \delta(s_{i},s_{j})
-\end{equation}
+	\subsection{Specific Heat}
+	\begin{equation}
+		C=\beta^2[<E^2>-<E>^2]
+	\end{equation}
 
-Where $J_{c}$ is a coupling constant, the summation is over the nearest neighbours and a Kronecker delta function which equals one whenever $s_{i} == s_{j}$.
+	\subsection{Magnetic Susceptibility}
+	\begin{equation}
+		\chi=\beta[<M^2>-<M>^2]
+	\end{equation}
 
-\section{Magnetisation}
+\section{Partition Function}
 
-For a $q=2$ (Ising) model, the magnetisation is simply the sum of the spin states.
-Thinking about it in terms of angles, assuming the lattice is completely filled then opposite states will cancel out.
+	\subsection{Calculating the DoS}
 
-\begin{equation}
-\mathcal{M} = \sum\limits_{i}^{N} s_{i}
-\end{equation}
+\section{Fixing the Partition Functions}
 
-For more complex $q$ we must fully engage in the angle model to calculate magnetisation.
-Because each of the states $1,q$ has an angle representation and we know that the Magnetisation is a real quantity it was simply the sum of the cosines of the angle.
-
-\begin{equation}
-\mathcal{M} = \sum\limits_{i}^{N} \cos{s_{i}}
-\end{equation}
-
-Onsagers Solution for Spontaneous magnetisation for the 2D Ising Model, (ie/$q=2$ Potts Model)\cite{Montroll1963}
-\begin{equation}
-\mathcal{M} = \left(1 - \left[\sinh{2\beta J}\right]^{-4}\right)^{\frac{1}{8}}
-\end{equation}
-With $J$ being coupling strength. For the majority of this project, it is reasonable to assume $J=1$ because it isn't being used to calculate thermodynamic quantities of real materials.
-
-
-The existence of an analytical solution allows for direct comparison.
-To confirm that a generalised $q$ state Potts Model simulation is working correct involves setting the parameters to $d=2 q=2$ and confirming the accuracy of the analytic solution.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{2-Theory/osangersolution.png}
-\caption{Mathematica plot of Osangers exact solution}
-\end{figure}
-
-
-
-\section{Other Thermodynamic Quantities}
+\section{Free Energy}

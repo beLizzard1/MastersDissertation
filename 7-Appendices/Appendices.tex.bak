@@ -460,7 +460,3 @@
     \caption{Graph showing the $\log{g\left(E\right)}$ vs E for Q10}
 \end{subfigure}
 \end{figure}
-
-\subsection{Mathematica Data Processing Notebook}
-\label{subsec:MathematicaNotebook}
-\includepdf[pages=-,scale=.8,pagecommand={}]{7-Appendices/AllQatOnceAnalysis.pdf}

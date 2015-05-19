@@ -7,7 +7,11 @@ Below is a sample from the Metropolis data file.
 0    & 0             & 0.000277831 \\
 0.05 & 0.00000183835 & 0.000301732 \\
 0.1  & 0.00000759666 & 0.000289046 \\
+0.15 & 0.000018079   & 0.000362044 \\
+0.2  & 0.0000332178  & 0.000381555 \\
 ...  & ...           & ...         \\
+2.35 & 0.00025569    & 0.00103987  \\
+2.4  & 0.000164989   & 0.000922352 \\
 2.5  & 0.000177274   & 0.000889706 \\
 2.55 & 0.000121696   & 0.000737807 \\
 2.6  & 0.000113462   & 0.000829744
@@ -96,7 +100,12 @@ This leads to a data file looking similar to the one below.
 10 & -1.72614 & 0.00648999 \\
 12 & -1.71512 & 0.0058484  \\
 14 & -1.69895 & 0.0067316  \\
-...	& ...	& ...	\\
+16 & -1.71709 & 0.00491472 \\
+18 & -1.7059  & 0.00541706 \\
+20 & -1.72339 & 0.00435244 \\
+22 & -1.69558 & 0.00478683 \\
+24 & -1.71893 & 0.00365214 \\
+26 & -1.71888 & 0.0039212  \\
 28 & -1.7049  & 0.00379986 \\
 30 & -1.7069  & 0.00395975 \\
 32 & -1.72059 & 0.00357536
@@ -162,6 +171,7 @@ Minimum & Maximum & Midpoint \\ \hline
 -1.9375 & -1.875  & -1.90625 \\ \hline
 -1.875  & -1.8125 & -1.84375 \\ \hline
 ...     & ...     & ...      \\ \hline
+-0.25   & -0.1875 & -0.21875 \\ \hline
 -0.1875 & -0.125  & -0.15625 \\ \hline
 -0.125  & -0.0625 & -0.09375 \\ \hline
 -0.0625 & 0.000   & -0.03125 \\ \hline
@@ -202,74 +212,12 @@ A comparing my results with a similar result from the paper by Guagnelli for Q=1
 \end{figure}
 
 The primary discrepancies between the two results is likely to occur due to the difference in lattice sizes used to generate the results and some arbitrary scaling factors used in the simulation.
-To calculate the partition function, $Z$, from this data I turned to the symbolic computational mathematics tool kit Mathematica to calculate the constants that keep the Piecewise function of $\log{\rho(E)}$ continuous.
-The table \ref{subsec:ContinuityConstants} contains these constants for each of the 5 Q tested, the Null values occur due to the aforementioned scaling issues.
+To calculate the partition function, $Z$, from this data I turned to the symbolic computational mathematics tool kit Mathematica.
+Enforcing the condition 
+\begin{equation}
 
-By plotting a Piecewise function in side Mathematica where each component is of the form.
-\begin{equation}
-f(E) = C_i + a_i(E - E_i)
 \end{equation}
-$E_i$ is the Midpoint of the interval, $C_i$ is the constant value for that interval to ensure continuity and $a_i$ is the measured value of $a_n$ at the midpoint.
-A sample of the piecewise function that Mathematica generates for Q2 is provided in the table at  \ref{subsec:Q2Piecewise}.
-Plotting the these Piecewise functions is a good way to ascertain the continuity of the newly generated functions. However due to the way Mathematica renders these functions there appears to be gaps in the rendered output. Included below is the plot for the Q2 piecewise function of $\log{g\left(E\right)}$.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.75\textwidth]{4-Results/Q2Log(g(E)).png}
-\caption{Graph showing the $\log{g\left(E\right)}$ vs E}
-\end{figure}
-The plots for Q3, Q4, Q8, Q10 can be found in the appendix at \ref{subsec:QLogg}. All the plots show similar behaviour for all the various values of Q.
-Now the only piece of information that remains to provide the complete Density of States is the constant, $c_0$ that is added to all of the piecewise functions.
-As explained earlier this value is calculated using the following equation
-\begin{equation}
-C_0 = \frac{2L^2}{\int g(E)}
-\end{equation}
-In this case, $g(E)$ is the incomplete Density of States. 
-The integral can be computed easily using the tools provided by Mathematica however it could also be computed using a simple Simpson's rule integrator due to the linear nature of the approximations used to calculate the Density of States.
-After adding this constant to the incomplete Density of States, you get the complete Density of States for that simulation.
-The next stage of the processing for the Mathematica program is to calculate the Partition Function.
-The partition function can be written in the form.
-\begin{equation}
-\mathcal{Z} = \int g(E) e^{-\beta E}
-\end{equation}
-Using Mathematica to perform the integration numerically across the sampled energy range you can extract the Partition Function as a function of $\beta$.
-With this done the analysis of this part of the project is complete.
+
+
+
 \section{Wang Landau with a Twist}
-After modifying the configuration file to add the twist into the simulation and running the simulation across various lattice sizes.
-After extracting the data from the programs output files and importing it into Mathematica the code is nearly indistinguishable from that described earlier for the Wang Landau data so to ensure that I am not repeating any material I will describe the next stages of analysis here. The plots of the incomplete Density of States are available in the appendix at \ref{subsec:QLoggInt}.
-
-Having now calculated the Partition Functions for the untwisted $Z$ and twisted $Z^*$ lattice, the next stage is to calculate the interface free energy. The Interface Free Energy as described earlier can be written as 
-\begin{equation}
-F_{I}\left(L\right)=-\log{\frac{Z^*}{Z}} - \log{L}
-\end{equation}
-The Mathematica notebook provided in the appendix \ref{subsec:MathematicaNotebook} is a copy of the working code used to perform all of the analysis for the Wang Landau model.
-Taking the results from the Mathematica notebook for the Interface Free Energy at $\beta_c$ and using the form for the interface tension \cite{1111.4832}.
-\begin{equation}
-\sigma = \lim_{L\to\infty} \frac{F_{I}}{V_{D-1}}
-\end{equation}
-
-Taking the results from the Mathematica notebook for the various grid sizes and taking a fit of the plot to the thermodynamic limit leads to the results below.
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{4-Results/Q2-InterfaceTension.png}
-    \caption{Q2 $\sigma = 47.50 \pm 13.45$}
-\end{subfigure}
-\begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{4-Results/Q3-InterfaceTension.png}
-    \caption{Q3 $\sigma = 31.74 \pm 22.35$}
-\end{subfigure}
-
-\begin{subfigure}[b]{0.45\textwidth}
-   \includegraphics[width=\textwidth]{4-Results/Q4-InterfaceTension.png}
-    \caption{Q4 $\sigma = 28.42 \pm 17.19$}
-\end{subfigure}
-
-\begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{4-Results/Q8-InterfaceTension.png}
-    \caption{Q8 $\sigma = 35.79 \pm 11.74$}
-\end{subfigure}
-\begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{4-Results/Q10-InterfaceTension.png}
-    \caption{Q10 $\sigma = 38.72 \pm 7.90$}
-\end{subfigure}
-\end{figure}
