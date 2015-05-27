@@ -221,7 +221,7 @@ The plots for Q3, Q4, Q8, Q10 can be found in the appendix at \ref{subsec:QLogg}
 Now the only piece of information that remains to provide the complete Density of States is the constant, $c_0$ that is added to all of the piecewise functions.
 As explained earlier this value is calculated using the following equation
 \begin{equation}
-C_0 = \frac{2L^2}{\int g(E)}
+C_0 = \frac{2L^2}{\int g(E) dE}
 \end{equation}
 In this case, $g(E)$ is the incomplete Density of States. 
 The integral can be computed easily using the tools provided by Mathematica however it could also be computed using a simple Simpson's rule integrator due to the linear nature of the approximations used to calculate the Density of States.
@@ -229,7 +229,7 @@ After adding this constant to the incomplete Density of States, you get the comp
 The next stage of the processing for the Mathematica program is to calculate the Partition Function.
 The partition function can be written in the form.
 \begin{equation}
-\mathcal{Z} = \int g(E) e^{-\beta E}
+\mathcal{Z} = \int g(E) e^{-\beta E} dE
 \end{equation}
 Using Mathematica to perform the integration numerically across the sampled energy range you can extract the Partition Function as a function of $\beta$.
 With this done the analysis of this part of the project is complete.
@@ -247,29 +247,60 @@ Taking the results from the Mathematica notebook for the Interface Free Energy a
 \sigma = \lim_{L\to\infty} \frac{F_{I}}{V_{D-1}}
 \end{equation}
 
-Taking the results from the Mathematica notebook for the various grid sizes and taking a fit of the plot to the thermodynamic limit leads to the results below.
+Taking the results from the Mathematica notebook for the various grid sizes and taking a fit of the plot to the thermodynamic limit leads to the results below for the interface tension $\sigma$ at $\beta_c$.
 \begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{4-Results/Q2-InterfaceTension.png}
-    \caption{Q2 $\sigma = 47.50 \pm 13.45$}
+    \caption{Q2 $\sigma = -0.01404 \pm 0.00236$}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{4-Results/Q3-InterfaceTension.png}
-    \caption{Q3 $\sigma = 31.74 \pm 22.35$}
+    \caption{Q3 $\sigma = -0.02238 \pm 0.00815$}
 \end{subfigure}
 
 \begin{subfigure}[b]{0.45\textwidth}
    \includegraphics[width=\textwidth]{4-Results/Q4-InterfaceTension.png}
-    \caption{Q4 $\sigma = 28.42 \pm 17.19$}
+    \caption{Q4 $\sigma = -0.02183 \pm 0.00732$}
 \end{subfigure}
 
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{4-Results/Q8-InterfaceTension.png}
-    \caption{Q8 $\sigma = 35.79 \pm 11.74$}
+    \caption{Q8 $\sigma = -0.01650 \pm 0.00534$}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{4-Results/Q10-InterfaceTension.png}
-    \caption{Q10 $\sigma = 38.72 \pm 7.90$}
+    \caption{Q10 $\sigma = =0.01455 \pm 0.00435$}
 \end{subfigure}
 \end{figure}
+This information isn't useful for determining the behaviour of the Interface tension reformatting the output from the Mathematica notebook to extract the interface tension at a range of $\beta$ and for all of the lattice sizes provides further insight into the behaviour of the interface tension.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{4-Results/Q2VariousGridSizesTensions.png}
+
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{4-Results/Q3VariousGridSizesTensions.png}
+
+\end{subfigure}
+
+\begin{subfigure}[b]{0.45\textwidth}
+   \includegraphics[width=\textwidth]{4-Results/Q4VariousGridSizesTensions.png}
+
+\end{subfigure}
+
+\begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{4-Results/Q8VariousGridSizesTensions.png}
+
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{4-Results/Q10VariousGridSizesTensions.png}
+
+\end{subfigure}
+\end{figure}
+
+In the graphs above you can clearly see that the interface tension on the smaller grids rapidly increases with $\beta$. This is primarily due to the fact that on a smaller lattice, the affect of the twist is significantly larger than on a bigger lattice.
+On the larger lattices which almost appear to be linear in this scale you would expect to have the same or similar behaviour over a larger $\beta$ range.
+For a large $\beta$, low T, the twist artificially creates an interface that leads to an increase in the energy. The overall effect of the interface to the systems energy is directly proportional to the lattice size which would explain why for the larger lattice sizes the tension doesn't grow rapidly in the range of $\beta$ sampled.

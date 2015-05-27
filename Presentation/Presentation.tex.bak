@@ -1,0 +1,130 @@
+\documentclass[14pt]{beamer}
+\usetheme{Goettingen}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Robert James}
+\title{A study of Interfaces\\ How? Simply add a twist}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+\logo{SwanseaLogo.png} 
+\institute{Swansea University} 
+\date{29/05/2015} 
+%\subject{} 
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\begin{frame}
+%\tableofcontents
+%\end{frame}
+
+\begin{frame}{Objectives}
+At the end of this presentation, I will have lead you through the following steps.
+\begin{enumerate}
+	\item An introduction to the Potts Model
+	\item Accessing Thermodynamic quantities
+	\item Why do we care about Interfaces
+	\item How to add a twist
+	\item Project Results
+\end{enumerate}
+
+For each of the above steps, I will summarise how they pertain to my project and any further information.
+
+\end{frame}
+
+\section{An Introduction to the Potts Model}
+\begin{frame}{History}
+\begin{itemize}
+	\item Originally proposed as a thesis topic for Renfrey Potts by Cyril Domb (1951).
+	\item The Potts Model was originally proposed as a generalisation of the Ising Model (Ising 1925).
+	\item The 4 state planar Potts Model is also known as the Ashkin-Teller model who studied 
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Q States}
+Each state, in 2D, can be visualised as q possible points uniformly distributed around a circle. The angles can be represented as
+\begin{equation}
+\theta_{n} = \frac{2 \pi n}{Q}
+\end{equation}
+Each site on the lattice, $s_i$ can take on the values $\left\lbrace 1,...,Q\right\rbrace$.
+\end{frame}
+
+\begin{frame}{Hamiltonian}
+In this project, the behaviour of the lattice 
+\begin{equation}
+\mathcal{H} = -J_{p} \sum_{\left(i,j\right)} \delta_{Kr}\left(s_i,s_j\right)
+\end{equation}
+In this project, to simplify the values being returned, the coupling constant $J_{p}$ is set to 1.
+
+\end{frame}
+
+
+\section{Accessing Thermodynamic quantities}
+\begin{frame}{Thermodynamic Quantities}
+It should now be stated that.
+\begin{equation}
+\beta = \frac{1}{\kappa_{B} T}
+\end{equation}
+
+That being said, this project actually sets many constants to be 1 for simplicity. So from now on you can write $\beta$ as.
+\begin{equation}
+\beta = \frac{1}{T}
+\end{equation}
+
+\end{frame}
+
+\begin{frame}{Thermodynamic Quantities}
+Now that the housekeeping matters have been attended to.
+Various thermodynamic quantities have to be measured on the lattice.
+Having the Hamiltonian of the model makes the Energy measurement trivial due to the fact it is equivalent to the Total Energy.
+
+
+The Spontaneous Magnetisation of the Lattice.
+\begin{equation}
+\mathcal{M} = -\sum_{i}^{V} s_i
+\end{equation}
+
+\end{frame}
+
+\begin{frame}{Other Thermodynamic Quantities}
+Other Thermodynamic Quantities that I measured from the Lattice include the Specific Heat and the Magnetic Susceptibility.
+These can be written as.
+\begin{equation}
+C = \beta^2 \left[ \left\langle E^2 \right\rangle - \left\langle E \right\rangle^2 \right]
+\end{equation}
+
+\begin{equation}
+\chi = \beta \left[ \left\langle M^2 \right\rangle - \left\langle M \right\rangle^2 \right]
+\end{equation}
+
+\end{frame}
+
+\begin{frame}{
+
+
+\end{frame}
+
+\section{Why do we care about Interfaces}
+\begin{frame}
+
+\end{frame}
+
+\section{How to add a twist}
+\begin{frame}
+
+\end{frame}
+
+\section{Project Results}
+\begin{frame}
+
+\end{frame}
+
+
+\end{document}

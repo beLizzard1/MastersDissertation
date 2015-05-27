@@ -1,2 +1,22 @@
 \chapter{Conclusion and Reflection}
-Wibble Wobble
+To conclude this project I will discuss what work has been done, how it related to the original goals of the project and where further work and progress could have been made.
+The first goal, to perform a Monte Carlo simulation of the Potts Model. 
+Using the a Metropolis update algorithm and later a slightly modified version for the Wang Landau sampling method, I developed a computer simulation program that was met the first goal. 
+While I achieved this I feel that the large amount of time spent at this phase reduced the effectiveness of the latter stages and that focus here wasn't the best use of my time.
+The second goal which was to access the traditionally harder to calculate Partition Functions which required the reconstruction of the Density of States.
+I believe this goal has been achieved but I feel that sampling a larger range of Lattice Sizes would be essential to reduce the errors and provide a more complete picture of the results.
+Further to this point I feel that it would be essential to sample as many lattice sizes as possible to ensure that the behaviour shown still occurs as the size increases.
+The final goal of observing the behaviour of the interface tensions has been partially completed. 
+While I did manage to collect some information about the Interface Tensions at $\beta_c$ and for a range of $\beta$ values the small number of different lattice sizes could have severely restricted any more complex behaviours that may have arisen.
+I would like to have computed comparable results to that of the prevailing literature referenced throughout my paper and I feel that the end results of my project for this goal are missing a final stage of analysis.
+With regards to the programming component of this project, I feel that some of the design choices I made restricted the performance of the code too much and as such contributed to the reduced lattice sizes that were sampled.
+Modification to the lattice memory allocation from 2 dimensional array to a 1 dimensional is the most glaring potential optimisation.
+
+I would say that the use of the Wang Landau algorithm provides a method of calculating the Partition Functions of arbitrary lattice configurations. 
+The implementation of the algorithm required several minor modifications to a standard Metropolis update algorithm and that should be the first step of all future implementations of similar work.
+The inclusion of a Metropolis update algorithm allows for a self verification process to occur between the two operation modes and this should be seen as a positive. 
+I would have liked to have tied my simulation results down to real world experimental data as part of the verification process but due to simplifications that I had put in my code i.e./$k_B = J = 1$ I found finding comparable results extremely difficult and I would suggest that while the model behaviour appears correct some experimental verification can go a long way.
+I found the Energy scaling issues to be rather time consuming to debug because the source wasn't initially obvious. I would therefore suggest another test in the case of bizarre energy measurements from similar problems be plotting the maximum energy returned against the number of states. It helped narrow down the potential sources of the issue. 
+While I found the benefits of using C++ over C to be numerous, there are several potential improvements that would feature if I were involved in any future work. Aside from the modifications to the array allocation the Object orientation helped add a layer of abstraction but added several layers of potential performance hits. This being said, further investigation could focus on the implementation of parallelism into the programs operation. While the Wang Landau algorithm isn't embarrassingly parallel the PRNG could be placed in an alternate thread to increase the speed of updates.
+
+This project has developed my programming skills, pushed my understanding of computational and statistical physics to their limits and has given me an understanding of the strengths and weaknesses of several sampling techniques. While I feel the information gleaned about the behaviour of the Interfaces is limited due to a number of factors I believe that given the opportunity the limitations could be resolved. 
